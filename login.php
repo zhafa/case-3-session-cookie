@@ -6,40 +6,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+</head>
+
+<body>
+    <h2>Login</h2>
+    <form id="login-form">
+        <label for="email">Email:</label><br>
+        <input type="text" id="email" name="email"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br>
+        <input type="checkbox" id="remember" name="remember">
+        <label for="remember">Remember Me</label><br>
+        <input type="submit" value="Login">
+    </form>
+
+    <!-- Dialog box for displaying error message -->
+    <div id="dialog" title="Error" style="display:none;">
+        <p id="dialog-message"></p>
+    </div>
+
     <script>
         $(document).ready(function() {
+            // Load remembered email from cookie
+            var rememberedEmail = getCookie("remembered_email");
+            if (rememberedEmail !== "") {
+                $("#email").val(rememberedEmail);
+            }
+
             $("#login-form").submit(function(e) {
                 e.preventDefault();
                 var email = $("#email").val();
                 var password = $("#password").val();
+                var remember = $("#remember").is(":checked");
 
-                // Validasi email di sisi client
+                // Validate email and password on client side
                 if (!validateEmail(email)) {
                     showDialog("Email tidak valid");
                     return;
                 }
 
-                // Validasi password di sisi client
                 if (!validatePassword(password)) {
                     showDialog("Password tidak valid");
                     return;
                 }
 
-                // Kirim data ke server menggunakan AJAX
+                // Send data to server using AJAX
                 $.ajax({
                     type: "POST",
-                    url: "login_check.php",
+                    url: "checker.php",
                     data: {
                         email: email,
-                        password: password
+                        password: password,
+                        remember: remember
                     },
                     success: function(response) {
                         if (response === "success") {
-                            window.location.href = "profile.php";
+                            if (remember) {
+                                setCookie("remembered_email", email, 24); // Cookie berlaku selama 24 jam
+                            }
+                            // Redirect ke halaman profil jika login berhasil
+                            window.location.href = "profil.php";
                         } else {
+                            // Tampilkan pesan kesalahan jika login gagal
                             showDialog("Email atau password salah");
                         }
                     }
+
                 });
             });
 
@@ -54,27 +88,39 @@
             }
 
             function showDialog(message) {
-                $("#dialog").text(message);
-                $("#dialog-modal").dialog();
+                $("#dialog-message").text(message);
+                $("#dialog").dialog();
+            }
+
+            // Function to set cookie
+            function setCookie(cname, cvalue, exhours) {
+                var d = new Date();
+                d.setTime(d.getTime() + (exhours * 60 * 60 * 1000)); // Mengubah ke jam
+                var expires = "expires=" + d.toUTCString();
+                document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+            }
+
+
+
+            // Function to get cookie
+            function getCookie(cname) {
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) === ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) === 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
             }
         });
     </script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-</head>
 
-<body>
-    <h2>Login</h2>
-    <form id="login-form">
-        <label for="email">Email:</label><br>
-        <input type="text" id="email" name="email"><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br>
-        <input type="submit" value="Login">
-    </form>
-    <div id="dialog-modal" title="Error" style="display:none;">
-        <p id="dialog"></p>
-    </div>
 </body>
 
 </html>
