@@ -1,0 +1,86 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#victor {
+  font-weight: 700;
+}
+
+.color {
+  color: hsl(0, 0%, 59%);
+}
+
+body {
+  font-family: "Kumbh Sans", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.body {
+  background-image: url(./doc_images/bg-pattern-top.svg);
+
+  background-repeat: no-repeat;
+  background-color: hsl(185, 75%, 39%);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background-color: hsl(0, 0%, 100%);
+  text-align: center;
+  width: 350px;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.upper {
+  height: 150px;
+  width: 350px;
+  background: url(./doc_images/bg-pattern-card.svg);
+  background-size: cover;
+}
+
+#img {
+  width: 100px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: -50px;
+  border: 7px solid white;
+}
+
+.lower-name {
+  color: hsl(0, 0%, 59%);
+}
+
+.intro-one {
+  margin-top: 54px;
+  height: 250px;
+  margin-bottom: -75px;
+  line-height: 28px;
+}
+
+.activities {
+  padding-top: 22px;
+  padding-right: 40px;
+  border-top: 1px solid hsl(0, 0%, 59%);
+  padding-left: 40px;
+  margin-top: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.btn-primary-custom {
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
