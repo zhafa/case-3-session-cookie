@@ -71,9 +71,6 @@ if (isset($_GET['logout'])) {
         $("#dialog-message").text(message);
         $("#dialog").dialog();
       }
-
-      // Contoh Penggunaan:
-      // showdialog ("Ini adalah contoh pesan.");
     });
   </script>
 </body>
